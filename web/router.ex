@@ -16,7 +16,7 @@ defmodule EbayClone.Router do
   scope "/", EbayClone do
     pipe_through :browser
 
-    get "/", HomepageController, :index
+    get "/", HomepageController, :sign_in
     resources "/users", UserController
   end
 end

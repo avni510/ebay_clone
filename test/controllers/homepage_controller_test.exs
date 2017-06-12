@@ -3,6 +3,6 @@ defmodule EbayClone.HomepageControllerTest do
 
   test "a sign in page is displayed" do
     conn = get build_conn(), "/"
-    assert html_response(conn, 200) =~ "Hello World"
+    assert html_response(conn, 200) =~ "Sign In"
   end
 end

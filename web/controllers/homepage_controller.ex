@@ -1,4 +1,4 @@
-defmodule EbayClone.PageController do
+defmodule EbayClone.HomepageController do
   use EbayClone.Web, :controller
 
   def index(conn, _params) do

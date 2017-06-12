@@ -14,13 +14,9 @@ defmodule EbayClone.Router do
   end
 
   scope "/", EbayClone do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", HomepageController, :index
+    resources "/users", UserController
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", EbayClone do
-  #   pipe_through :api
-  # end
 end

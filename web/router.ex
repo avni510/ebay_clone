@@ -16,7 +16,12 @@ defmodule EbayClone.Router do
   scope "/", EbayClone do
     pipe_through :browser
 
-    get "/", HomepageController, :sign_in
-    resources "/users", UserController
+    resources "/registrations", RegistrationController, only: [:new, :create]
+
+    get "/login", SessionController, :new
+
+    post "/login", SessionController, :create
+
+    delete "/logout", SessionController, only: [:new, :create]
   end
 end

@@ -4,10 +4,11 @@ defmodule EbayClone.Repo.Migrations.CreateUser do
   def change do
     create table(:users) do
       add :email, :string
-      add :password, :string
+      add :crypted_password, :string
 
       timestamps()
     end
+    create unique_index(:users, [:email])
 
   end
 end

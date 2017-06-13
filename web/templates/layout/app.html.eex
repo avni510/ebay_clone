@@ -9,6 +9,7 @@
 
     <title>Hello EbayClone!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <%= link "Register", to: registration_path(@conn, :new) %>
   </head>
 
   <body>

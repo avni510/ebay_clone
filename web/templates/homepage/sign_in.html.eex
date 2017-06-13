@@ -1,7 +1,0 @@
-<h2> Welcome! </h2>
-
-<p> Sign In </p>
-
-<%= render "form.html", conn: @conn %>
-
-<%= link "Create an Account", to: user_path(@conn, :new) %>

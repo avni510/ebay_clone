@@ -1,5 +1,6 @@
 defmodule EbayClone.SessionTest do
   use EbayClone.ModelCase
+  use Phoenix.ConnTest
 
   alias EbayClone.User
   alias EbayClone.Session
@@ -17,7 +18,7 @@ defmodule EbayClone.SessionTest do
     assert user.email == "foo@example.com"
   end
 
-  test "a error is returned if the user exists and the password does not match" do
+  test "an error is returned if the user exists and the password does not match" do
     attrs =  %{email: "foo@example.com", password: "password"}
     changeset = User.changeset(%User{}, attrs)
     Registration.create(changeset, Repo)
@@ -26,12 +27,24 @@ defmodule EbayClone.SessionTest do
     assert :error == Session.login(params, Repo)
   end
 
-  test "a error is returned if the user does not exist" do
+  test "an error is returned if the user does not exist" do
     attrs =  %{email: "foo@example.com", password: "password"}
     changeset = User.changeset(%User{}, attrs)
     Registration.create(changeset, Repo)
     params =  %{"email" => "bar@example.com", "password" => "1234"}
 
     assert :error == Session.login(params, Repo)
+  end
+
+  test "user is returned if the session has a current user" do
+    attrs =  %{email: "foo@example.com", password: "password"}
+    changeset = User.changeset(%User{}, attrs)
+    Registration.create(changeset, EbayClone.Repo)
+    user_id  = EbayClone.Repo.get_by(User, email: attrs[:email]).id
+
+    conn = build_conn() |> assign(:current_user, user_id)
+    user = Session.current_user(conn)
+
+    assert "foo@example.com" == user.email
   end
 end

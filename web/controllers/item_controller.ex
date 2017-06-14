@@ -14,7 +14,9 @@ defmodule EbayClone.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
-    changeset = Item.changeset(%Item{}, item_params)
+    current_user = EbayClone.Session.current_user(conn)
+    params_with_user_id = Map.merge(item_params, %{"user_id" => current_user.id})
+    changeset = Item.changeset(%Item{}, params_with_user_id)
 
     case Repo.insert(changeset) do
       {:ok, _item} ->

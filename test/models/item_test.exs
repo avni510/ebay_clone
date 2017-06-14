@@ -13,7 +13,7 @@ defmodule EbayClone.ItemTest do
 
   def valid_attrs do
     {:ok, user} = create_user()
-    %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010},
+    %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
       name: "some content",
       start_price: 42,
       user_id: user.id}
@@ -28,6 +28,7 @@ defmodule EbayClone.ItemTest do
 
     test "changeset with invalid attributes" do
       changeset = Item.changeset(%Item{}, %{})
+
       refute changeset.valid?
     end
 
@@ -45,35 +46,42 @@ defmodule EbayClone.ItemTest do
     end
 
     test "changeset is invalid if user id does not exist" do
-      attrs = Map.delete(valid_attrs(), :user_id)
+      invalid_attrs = Map.delete(valid_attrs(), :user_id)
 
-      assert {:user_id, "can't be blank"} in errors_on(%Item{}, attrs)
+      assert {:user_id, "can't be blank"} in errors_on(%Item{}, invalid_attrs)
     end
 
     test "changeset is invalid if name does not exist" do
-      attrs = Map.delete(valid_attrs(), :name)
+      invalid_attrs = Map.delete(valid_attrs(), :name)
 
-      assert {:name, "can't be blank"} in errors_on(%Item{}, attrs)
+      assert {:name, "can't be blank"} in errors_on(%Item{}, invalid_attrs)
     end
 
     test "changeset is invalid if start_price does not exist" do
-      attrs = Map.delete(valid_attrs(), :start_price)
+      invalid_attrs = Map.delete(valid_attrs(), :start_price)
 
-      assert {:start_price, "can't be blank"} in errors_on(%Item{}, attrs)
+      assert {:start_price, "can't be blank"} in errors_on(%Item{}, invalid_attrs)
     end
 
     test "changeset is invalid if end_date does not exist" do
-      attrs = Map.delete(valid_attrs(), :end_date)
+      invalid_attrs = Map.delete(valid_attrs(), :end_date)
 
-      assert {:end_date, "can't be blank"} in errors_on(%Item{}, attrs)
+      assert {:end_date, "can't be blank"} in errors_on(%Item{}, invalid_attrs)
     end
 
     test "changeset is invalid if user_id does not exist" do
-      attrs = %{valid_attrs() | user_id: 3}
-      item = Item.changeset(%Item{}, attrs)
+      invalid_attrs = %{valid_attrs() | user_id: -1}
+      invalid_item = Item.changeset(%Item{}, invalid_attrs)
 
-      assert {:error, changeset} = Repo.insert(item)
+      assert {:error, changeset} = Repo.insert(invalid_item)
       assert changeset.errors[:user_id] == {"does not exist", []}
+    end
+
+    test "changeset is invalid if date is in the past" do
+      invalid_attrs = %{valid_attrs() |
+                end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}}
+
+      assert {:end_date, "can't be a date in the past"} in errors_on(%Item{}, invalid_attrs)
     end
   end
 end

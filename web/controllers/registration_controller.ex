@@ -14,8 +14,9 @@ defmodule EbayClone.RegistrationController do
     case EbayClone.Registration.create(changeset, EbayClone.Repo) do
       {:ok, changeset} ->
         conn
+        |> put_session(:current_user, changeset.id)
         |> put_flash(:info, "Your account was created")
-        |> redirect(to: "/registration/new")
+        |> redirect(to: "/registrations/new")
       {:error, changeset} ->
         conn
         |> put_flash(:info, "Unable to create account")

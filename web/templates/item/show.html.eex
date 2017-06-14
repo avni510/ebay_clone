@@ -1,0 +1,33 @@
+<h2>Show item</h2>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @item.user_id %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @item.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @item.description %>
+  </li>
+
+  <li>
+    <strong>Start price:</strong>
+    <%= @item.start_price %>
+  </li>
+
+  <li>
+    <strong>End date:</strong>
+    <%= @item.end_date %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: item_path(@conn, :edit, @item) %>
+<%= link "Back", to: item_path(@conn, :index) %>

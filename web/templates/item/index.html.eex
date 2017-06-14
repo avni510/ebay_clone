@@ -1,0 +1,34 @@
+<h2>Listing items</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start price</th>
+      <th>End date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for item <- @items do %>
+    <tr>
+      <td><%= item.user_id %></td>
+      <td><%= item.name %></td>
+      <td><%= item.description %></td>
+      <td><%= item.start_price %></td>
+      <td><%= item.end_date %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: item_path(@conn, :show, item), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: item_path(@conn, :edit, item), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New item", to: item_path(@conn, :new) %>

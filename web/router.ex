@@ -18,10 +18,12 @@ defmodule EbayClone.Router do
 
     resources "/registrations", RegistrationController, only: [:new, :create]
 
-    get "/login", SessionController, :new
+    resources "/items", ItemController
 
-    post "/login", SessionController, :create
+    get "/", SessionController, :new
 
-    delete "/logout", SessionController, only: [:new, :create]
+    post "/", SessionController, :create
+
+    delete "/logout", SessionController, :delete
   end
 end

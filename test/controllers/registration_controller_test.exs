@@ -1,25 +1,29 @@
 defmodule EbayClone.RegistrationControllerTest do
   use EbayClone.ConnCase
 
-  test "a page to create an account is displayed" do
-    conn = get build_conn(), "/registrations/new"
+  describe "new" do
+    test "a page to create an account is displayed" do
+      conn = get build_conn(), "/registrations/new"
 
-    assert html_response(conn, 200) =~ "Create an account"
+      assert html_response(conn, 200) =~ "Create an account"
+    end
   end
 
-  test "a user is successfully created" do
-    conn = post build_conn(),
-                "/registrations",
-                [user: %{email: "foo@example.com", password: "password"}]
+  describe "create" do
+    test "a user is successfully created" do
+      conn = post build_conn(),
+                  "/registrations",
+                  [user: %{email: "foo@example.com", password: "password"}]
 
-    assert redirected_to(conn) =~ "/registration/new"
-  end
+      assert redirected_to(conn) =~ "/registrations/new"
+    end
 
-  test "errors are displayed if a user cannot be created" do
-    conn = post build_conn(),
-                "/registrations",
-                [user: %{email: "foo@example.com", password: "a"}]
+    test "errors are displayed if a user cannot be created" do
+      conn = post build_conn(),
+                  "/registrations",
+                  [user: %{email: "foo@example.com", password: "a"}]
 
-    assert html_response(conn, 200) =~ "Unable to create account"
+      assert html_response(conn, 200) =~ "Unable to create account"
+    end
   end
 end

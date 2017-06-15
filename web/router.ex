@@ -9,21 +9,25 @@ defmodule EbayClone.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :authentication do
+    plug EbayClone.Plug.Authenticate
   end
 
   scope "/", EbayClone do
     pipe_through :browser
 
-    resources "/registrations", RegistrationController, only: [:new, :create]
-
-    resources "/items", ItemController
-
     get "/", SessionController, :new
 
     post "/", SessionController, :create
 
+    resources "/registrations", RegistrationController, only: [:new, :create]
+
     delete "/logout", SessionController, :delete
+  end
+
+  scope "/", EbayClone do
+    pipe_through [:browser, :authentication]
+
+    resources "/items", ItemController
   end
 end

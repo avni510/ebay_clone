@@ -25,12 +25,4 @@ defmodule EbayClone.SessionController do
     |> put_flash(:info, "Logged out")
     |> redirect(to: "/")
   end
-
-  # defp delete_current_session(conn) do
-  #   if conn.assigns[:current_user] do
-  #     conn.assign(conn, :current_user, nil)
-  #   else
-  #     delete_session(conn, :current_user)
-  #   end
-  # end
 end

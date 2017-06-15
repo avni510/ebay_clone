@@ -1,5 +1,6 @@
 defmodule EbayClone.SessionControllerTest do
   use EbayClone.ConnCase
+  import EbayClone.UserCase
 
   describe "new" do
     test "a page to login is displayed", %{conn: conn} do
@@ -40,13 +41,15 @@ defmodule EbayClone.SessionControllerTest do
   end
 
   describe "delete" do
-    test "deletes the session and the user is redirected" do
-      conn = build_conn() |> assign(:current_user, 1)
-
+    test "deletes the session and the user is redirected", %{conn: conn} do
+      {:ok, user} = create_user("foo@example.com", "test password")
+      conn = post conn,
+                  session_path(conn, :create),
+                  [session: %{email: user.email, password: "test password"}]
       conn = delete conn, session_path(conn, :delete)
 
       assert redirected_to(conn) =~ session_path(conn, :new)
-      # assert conn.assigns[:current_user] == nil
+      assert get_session(conn, :current_user) == nil
     end
    end
 end

@@ -1,6 +1,7 @@
 defmodule EbayClone.SessionTest do
   use EbayClone.ModelCase
   use Phoenix.ConnTest
+  import EbayClone.UserCase
 
   alias EbayClone.Session
   alias EbayClone.Repo

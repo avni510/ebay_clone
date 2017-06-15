@@ -22,7 +22,6 @@ defmodule EbayClone.ModelCase do
       import Ecto.Changeset
       import Ecto.Query
       import EbayClone.ModelCase
-      import EbayClone.UserCase
     end
   end
 

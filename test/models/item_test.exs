@@ -1,5 +1,6 @@
 defmodule EbayClone.ItemTest do
   use EbayClone.ModelCase
+  import EbayClone.UserCase
 
   alias EbayClone.Item
 

@@ -2,17 +2,9 @@ defmodule EbayClone.ItemTest do
   use EbayClone.ModelCase
 
   alias EbayClone.Item
-  alias EbayClone.User
-  alias EbayClone.Registration
-
-  def create_user do
-    attrs =  %{email: "foo@example.com", password: "password"}
-    changeset = User.changeset(%User{}, attrs)
-    Registration.create(changeset, EbayClone.Repo)
-  end
 
   def valid_attrs do
-    {:ok, user} = create_user()
+    {:ok, user} = create_user("foo@example.com", "test password")
     %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
       name: "some content",
       start_price: 42,

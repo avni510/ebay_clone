@@ -2,16 +2,8 @@ defmodule EbayClone.ItemControllerTest do
   use EbayClone.ConnCase
 
   alias EbayClone.Item
-  alias EbayClone.User
-  alias EbayClone.Registration
 
-  def create_user do
-    attrs =  %{email: "foo@example.com", password: "password"}
-    changeset = User.changeset(%User{}, attrs)
-    Registration.create(changeset, EbayClone.Repo)
-  end
-
-  def basic_attrs do
+  def attrs_without_user_id do
     %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
       name: "some content",
       start_price: 42}
@@ -19,7 +11,7 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "index" do
     test "lists all items" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
       conn = get conn, item_path(conn, :index)
@@ -30,7 +22,7 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "new" do
     test "renders form for new item" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
       conn = get conn, item_path(conn, :new)
@@ -41,9 +33,9 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "create" do
     test "creates item and redirects when data is valid" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
-      attrs = basic_attrs()
+      attrs = attrs_without_user_id()
 
       conn = post conn, item_path(conn, :create), item: attrs
 
@@ -52,7 +44,7 @@ defmodule EbayClone.ItemControllerTest do
     end
 
     test "does not create item and renders errors when data is invalid" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
       conn = post conn, item_path(conn, :create), item: %{}
@@ -63,9 +55,9 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "show" do
     test "shows a chosen item" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
-      valid_attrs = Map.merge(basic_attrs(), %{user_id: user.id})
+      valid_attrs = Map.merge(attrs_without_user_id(), %{user_id: user.id})
       item = Repo.insert! Item.changeset(%Item{}, valid_attrs)
 
       conn = get conn, item_path(conn, :show, item)
@@ -74,7 +66,7 @@ defmodule EbayClone.ItemControllerTest do
     end
 
     test "renders page not found when id is nonexistent" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
       assert_error_sent 404, fn ->
@@ -85,9 +77,9 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "edit" do
     test "renders form for editing an item" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
-      valid_attrs = Map.merge(basic_attrs(), %{user_id: user.id})
+      valid_attrs = Map.merge(attrs_without_user_id(), %{user_id: user.id})
       item = Repo.insert! Item.changeset(%Item{}, valid_attrs)
 
       conn = get conn, item_path(conn, :edit, item)
@@ -96,7 +88,7 @@ defmodule EbayClone.ItemControllerTest do
     end
 
     test "renders page not found when id is nonexistent" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
       assert_error_sent 404, fn ->
@@ -107,9 +99,9 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "update" do
     test "updates a chosen item and redirects when data is valid" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
-      valid_attrs = Map.merge(basic_attrs(), %{user_id: user.id})
+      valid_attrs = Map.merge(attrs_without_user_id(), %{user_id: user.id})
       item = Repo.insert! Item.changeset(%Item{}, valid_attrs)
       changed_attrs = %{valid_attrs | name: "foobar"}
 
@@ -122,9 +114,9 @@ defmodule EbayClone.ItemControllerTest do
 
   describe "delete" do
     test "deletes an item" do
-      {:ok, user} = create_user()
+      {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
-      valid_attrs = Map.merge(basic_attrs(), %{user_id: user.id})
+      valid_attrs = Map.merge(attrs_without_user_id(), %{user_id: user.id})
       item = Repo.insert! Item.changeset(%Item{}, valid_attrs)
 
       conn = delete conn, item_path(conn, :delete, item), %{id: item.id}

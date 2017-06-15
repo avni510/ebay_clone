@@ -16,7 +16,7 @@ defmodule EbayClone.RegistrationController do
         conn
         |> put_session(:current_user, changeset.id)
         |> put_flash(:info, "Your account was created")
-        |> redirect(to: "/registrations/new")
+        |> redirect(to: "/items")
       {:error, changeset} ->
         conn
         |> put_flash(:info, "Unable to create account")

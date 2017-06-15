@@ -24,6 +24,7 @@ defmodule EbayClone.ConnCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import EbayClone.UserCase
 
       import EbayClone.Router.Helpers
 

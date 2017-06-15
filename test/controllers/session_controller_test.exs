@@ -1,51 +1,52 @@
 defmodule EbayClone.SessionControllerTest do
   use EbayClone.ConnCase
 
-  alias EbayClone.Registration
-  alias EbayClone.Repo
-  alias EbayClone.User
-
   describe "new" do
-    test "a page to login is displayed" do
-      conn = get build_conn(), "/"
+    test "a page to login is displayed", %{conn: conn} do
+      conn = get conn, session_path(conn, :new)
 
       assert html_response(conn, 200) =~ "Login"
     end
   end
 
   describe "create" do
-    test "a user is logged in" do
-      attrs =  %{email: "foo@example.com", password: "password"}
-      changeset = User.changeset(%User{}, attrs)
-      Registration.create(changeset, Repo)
-      conn = post build_conn(), "/", [session: %{email: "foo@example.com", password: "password"}]
+    test "a user is logged in", %{conn: conn} do
+      {:ok, user} = create_user("foo@example.com", "test password")
 
-      assert redirected_to(conn) =~ "/"
+      conn = post conn,
+                  session_path(conn, :create),
+                  [session: %{email: user.email, password: "test password"}]
+
+      assert redirected_to(conn) =~ item_path(conn, :index)
     end
 
-    test "a user is notified that the wrong password was entered" do
-      attrs =  %{email: "foo@example.com", password: "password"}
-      changeset = User.changeset(%User{}, attrs)
-      Registration.create(changeset, Repo)
-      conn = post build_conn(), "/", [session: %{email: "foo@example.com", password: "1234"}]
+    test "a user is notified that the wrong password was entered", %{conn: conn} do
+      {:ok, user} = create_user("foo@example.com", "test password")
+
+      conn = post conn,
+                  session_path(conn, :create),
+                  [session: %{email: user.email, password: "1234"}]
 
       assert html_response(conn, 200) =~ "Wrong email or password"
     end
 
-    test "the user does not exist" do
-      conn = post build_conn(), "/", [session: %{email: "invalid@example.com", password: "1234"}]
+    test "the user does not exist", %{conn: conn} do
+      conn = post conn,
+                  session_path(conn, :create),
+                  [session: %{email: "invalid@example.com", password: "1234"}]
 
       assert html_response(conn, 200) =~ "Wrong email or password"
     end
   end
 
-  # describe "delete" do
-  #   test "deletes the session and the user is redirected" do
-  #     conn = delete build_conn() |> assign(:current_user, 1), "/logout"
+  describe "delete" do
+    test "deletes the session and the user is redirected" do
+      conn = build_conn() |> assign(:current_user, 1)
 
-  #     Session.delete(conn)
+      conn = delete conn, session_path(conn, :delete)
 
-  #     assert redirected_to(conn) =~ "/"
-  #   end
-  # end
+      assert redirected_to(conn) =~ session_path(conn, :new)
+      # assert conn.assigns[:current_user] == nil
+    end
+   end
 end

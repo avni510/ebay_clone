@@ -1,5 +1,6 @@
 defmodule EbayClone.ItemControllerTest do
   use EbayClone.ConnCase
+  import EbayClone.UserCase
 
   alias EbayClone.Item
 
@@ -123,6 +124,24 @@ defmodule EbayClone.ItemControllerTest do
 
       assert redirected_to(conn) == item_path(conn, :index)
       refute Repo.get(Item, item.id)
+    end
+  end
+
+  describe "user_items_index" do
+    test "it displays all items for a user" do
+      {:ok, user1} = create_user("foo@example.com", "test password")
+      {:ok, user2} = create_user("bar@example.com", "password")
+      conn = build_conn() |> assign(:current_user, user1.id)
+      user1_attrs = Map.merge(attrs_without_user_id(), %{user_id: user1.id})
+      Repo.insert! Item.changeset(%Item{}, user1_attrs)
+      user2_attrs = %{attrs_without_user_id() | name: "new content"}
+      user2_attrs = Map.merge(user2_attrs, %{user_id: user2.id})
+      Repo.insert! Item.changeset(%Item{}, user2_attrs)
+
+      conn = get conn, item_path(conn, :user_items_index)
+
+      assert html_response(conn, 200) =~ "Listing items"
+      assert html_response(conn, 200) =~ "some content"
     end
   end
 end

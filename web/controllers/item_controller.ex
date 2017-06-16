@@ -2,6 +2,8 @@ defmodule EbayClone.ItemController do
   use EbayClone.Web, :controller
 
   alias EbayClone.Item
+  alias EbayClone.ItemInteractor
+  alias EbayClone.Session
 
   def index(conn, _params) do
     items = Repo.all(Item)
@@ -55,5 +57,11 @@ defmodule EbayClone.ItemController do
     conn
     |> put_flash(:info, "Item deleted successfully.")
     |> redirect(to: item_path(conn, :index))
+  end
+
+  def user_items_index(conn, _params) do
+    user = Session.current_user(conn)
+    items = ItemInteractor.get_items_for_user_id(user.id)
+    render(conn, "index.html", items: items)
   end
 end

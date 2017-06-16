@@ -26,8 +26,11 @@ defmodule EbayClone.Router do
   end
 
   scope "/", EbayClone do
+
     pipe_through [:browser, :authentication]
 
     resources "/items", ItemController
+
+    get "/myitems", ItemController, :user_items_index
   end
 end

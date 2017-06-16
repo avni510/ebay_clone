@@ -42,7 +42,9 @@ defmodule EbayClone.SessionTest do
     end
 
     test "nil is returned if the session has no current user" do
-      conn = build_conn() |> Plug.Session.call(Plug.Session.init([store: :cookie, key: "ok", signing_salt: "1"]))
+      conn = build_conn() |> Plug.Session.call(Plug.Session.init([store: :cookie,
+                                                                  key: "ok",
+                                                                  signing_salt: "1"]))
 
       current_user = Session.current_user(conn)
 
@@ -61,7 +63,9 @@ defmodule EbayClone.SessionTest do
     end
 
     test "returns false if the user is not logged in" do
-      conn = build_conn() |> Plug.Session.call(Plug.Session.init([store: :cookie, key: "ok", signing_salt: "1"]))
+      conn = build_conn() |> Plug.Session.call(Plug.Session.init([store: :cookie,
+                                                                  key: "ok",
+                                                                  signing_salt: "1"]))
 
       result = Session.logged_in?(conn)
 

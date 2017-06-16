@@ -9,6 +9,10 @@ defmodule EbayClone.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :hidden do
+    plug EbayClone.Plug.Hide
+  end
+
   pipeline :authentication do
     plug EbayClone.Plug.Authenticate
   end
@@ -19,18 +23,21 @@ defmodule EbayClone.Router do
     get "/", SessionController, :new
 
     post "/", SessionController, :create
-
-    resources "/registrations", RegistrationController, only: [:new, :create]
-
-    delete "/logout", SessionController, :delete
   end
 
   scope "/", EbayClone do
+    pipe_through [:browser, :hidden]
 
+    resources "/registrations", RegistrationController, only: [:new, :create]
+  end
+
+  scope "/", EbayClone do
     pipe_through [:browser, :authentication]
 
     resources "/items", ItemController
 
     get "/myitems", ItemController, :user_items_index
+
+    delete "/logout", SessionController, :delete
   end
 end

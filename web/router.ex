@@ -10,11 +10,11 @@ defmodule EbayClone.Router do
   end
 
   pipeline :hidden do
-    plug EbayClone.Plug.Hide
+    plug EbayClone.Plugs.Hide
   end
 
   pipeline :authentication do
-    plug EbayClone.Plug.Authenticate
+    plug EbayClone.Plugs.Authenticate
   end
 
   scope "/", EbayClone do

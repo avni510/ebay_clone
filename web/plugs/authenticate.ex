@@ -1,4 +1,4 @@
-defmodule EbayClone.Plug.Authenticate do
+defmodule EbayClone.Plugs.Authenticate do
   import Plug.Conn
   import Phoenix.Controller
 

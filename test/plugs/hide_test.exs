@@ -1,8 +1,8 @@
-defmodule EbayClone.Plug.HideTest do
+defmodule EbayClone.Plugs.HideTest do
   use EbayClone.ConnCase
   import EbayClone.UserCase
 
-  alias EbayClone.Plug.Hide
+  alias EbayClone.Plugs.Hide
 
   describe "call" do
     test "if the user is logged in it redirects them to /items", %{conn: conn} do

@@ -1,5 +1,4 @@
-defmodule EbayClone.Plug.Hide do
-  import Plug.Conn
+defmodule EbayClone.Plugs.Hide do
   import Phoenix.Controller
 
   alias EbayClone.Session
@@ -8,7 +7,7 @@ defmodule EbayClone.Plug.Hide do
   def init(default), do: default
 
   def call(conn, _default) do
-    if EbayClone.Session.logged_in?(conn) do
+    if Session.logged_in?(conn) do
       conn
       |> put_flash(:error, "You are already logged in")
       |> redirect(to: Routes.item_path(conn, :index))

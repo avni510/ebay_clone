@@ -1,8 +1,8 @@
-defmodule EbayClone.Plug.AuthenticateTest do
+defmodule EbayClone.Plugs.AuthenticateTest do
   use EbayClone.ConnCase
   import EbayClone.UserCase
 
-  alias EbayClone.Plug.Authenticate
+  alias EbayClone.Plugs.Authenticate
 
   describe "call" do
     test "if a user is logged in then a connection with the user id is stored in memory", %{conn: conn} do

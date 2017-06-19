@@ -1,0 +1,7 @@
+<h1> Welcome! </h2>
+
+<%= link "Login", to: session_path(@conn, :new) %>
+
+<br>
+
+<%= link "Create an Account", to: registration_path(@conn, :new) %>

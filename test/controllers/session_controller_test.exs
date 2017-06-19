@@ -48,7 +48,7 @@ defmodule EbayClone.SessionControllerTest do
                   [session: %{email: user.email, password: "test password"}]
       conn = delete conn, session_path(conn, :delete)
 
-      assert redirected_to(conn) =~ session_path(conn, :new)
+      assert redirected_to(conn) =~ homepage_path(conn, :get_homepage)
       assert get_session(conn, :current_user) == nil
     end
    end

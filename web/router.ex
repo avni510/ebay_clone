@@ -20,9 +20,11 @@ defmodule EbayClone.Router do
   scope "/", EbayClone do
     pipe_through :browser
 
-    get "/", SessionController, :new
+    get "/", HomepageController, :get_homepage
 
-    post "/", SessionController, :create
+    get "/login", SessionController, :new
+
+    post "/login", SessionController, :create
   end
 
   scope "/", EbayClone do

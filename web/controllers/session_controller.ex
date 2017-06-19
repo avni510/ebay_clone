@@ -11,7 +11,7 @@ defmodule EbayClone.SessionController do
         conn
         |> put_session(:current_user, user.id)
         |> put_flash(:info, "Logged in")
-        |> redirect(to: "/items")
+        |> redirect(to: item_path(conn, :index))
       :error ->
         conn
         |> put_flash(:info, "Wrong email or password")
@@ -23,6 +23,6 @@ defmodule EbayClone.SessionController do
     conn
     |> delete_session(:current_user)
     |> put_flash(:info, "Logged out")
-    |> redirect(to: "/")
+    |> redirect(to: homepage_path(conn, :get_homepage))
   end
 end

@@ -25,7 +25,48 @@
 
   <div class="form-group">
     <%= label f, :end_date, class: "control-label" %>
-    <%= datetime_select f, :end_date, class: "form-control" %>
+    <select id="item_end_date_month" name="item[end_date][month]">
+      <option selected="selected" value="1"> January </option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</option>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+    /
+    <select id="item_end_date_day" name="item[end_date][day]">
+      <option selected="selected">1</option>
+      <%= Enum.map 2..31, fn(x) -> %>
+        <option><%=x%></option>
+      <% end %>
+    </select>
+    /
+    <select id="item_end_date_year" name="item[end_date][year]">
+      <option selected="selected"> 2017 </option>
+      <%= Enum.map 2018..2022, fn(x) -> %>
+        <option><%=x%></option>
+      <% end %>
+    </select>
+    <label class="control-label"> Time: </label>
+    <select id="item_end_date_hour" name="item[end_date][hour]">
+      <option selected="selected"> 0 </option>
+      <%= Enum.map 1..23, fn(x) -> %>
+        <option><%=x%></option>
+      <% end %>
+    </select>
+    <select id="item_end_date_minute" name="item[end_date][minute]">
+      <option selected="selected"> 0 </option>
+      <%= Enum.map 1..59, fn(x) -> %>
+        <option><%=x%></option>
+      <% end %>
+    </select>
+
     <%= error_tag f, :end_date %>
   </div>
 

@@ -5,7 +5,7 @@ defmodule EbayClone.Item do
     field :name, :string
     field :description, :string
     field :start_price, :integer
-    field :end_date, Ecto.DateTime
+    field :end_date, :utc_datetime
     belongs_to :user, EbayClone.User
 
     timestamps()
@@ -29,8 +29,8 @@ defmodule EbayClone.Item do
   end
 
   defp add_errors_to_changeset(changeset, field, date) do
-    today = Ecto.DateTime.utc
-    if Ecto.DateTime.compare(date, today) == :lt do
+    today = DateTime.utc_now()
+    if DateTime.compare(date, today) == :lt do
       changeset
       |> add_error(field, "can't be a date in the past")
     else

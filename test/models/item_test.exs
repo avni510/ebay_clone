@@ -6,7 +6,7 @@ defmodule EbayClone.ItemTest do
 
   def valid_attrs do
     {:ok, user} = create_user("foo@example.com", "test password")
-    %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
+    %{end_date: %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
       name: "some content",
       start_price: 42,
       user_id: user.id}
@@ -70,9 +70,16 @@ defmodule EbayClone.ItemTest do
       assert changeset.errors[:user_id] == {"does not exist", []}
     end
 
+    test "changeset is invalid if date is now" do
+      invalid_attrs = %{valid_attrs() |
+                        end_date: DateTime.utc_now}
+
+      assert {:end_date, "can't be a date in the past"} in errors_on(%Item{}, invalid_attrs)
+    end
+
     test "changeset is invalid if date is in the past" do
       invalid_attrs = %{valid_attrs() |
-                end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}}
+                        end_date: %{DateTime.utc_now | year: DateTime.utc_now.year - 1}}
 
       assert {:end_date, "can't be a date in the past"} in errors_on(%Item{}, invalid_attrs)
     end

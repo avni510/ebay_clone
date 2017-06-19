@@ -8,13 +8,13 @@ defmodule EbayClone.ItemInteractorTest do
     test "it returns items for a specific user id" do
       create_item("foo@example.com",
                   "test password",
-                  %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
+                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
                   "item 1",
                   "foo",
                   42)
       {:ok, item_2} = create_item("bar@example.com",
                             "test password",
-                            %{day: 10, hour: 2, min: 0, month: 6, sec: 0, year: 2018},
+                            %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
                             "item 2",
                             "bar",
                             42)

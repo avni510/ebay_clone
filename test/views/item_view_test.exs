@@ -9,13 +9,13 @@ defmodule EbayClone.ItemViewTest do
     test "only items with end date in the future are returned" do
       create_item("foo@example.com",
                   "test password",
-                  %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
+                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
                   "item 1",
                   "foo",
                   42)
       create_item("bar@example.com",
                   "test password",
-                  %{day: 10, hour: 2, min: 0, month: 6, sec: 0, year: 2016},
+                  %{DateTime.utc_now | year: DateTime.utc_now.year - 1},
                   "item 2",
                   "bar",
                   42)

@@ -5,7 +5,7 @@ defmodule EbayClone.ItemControllerTest do
   alias EbayClone.Item
 
   def attrs_without_user_id do
-    %{end_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2018},
+    %{end_date: %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
       name: "some content",
       start_price: 42}
   end

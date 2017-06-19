@@ -5,7 +5,7 @@ defmodule EbayClone.Plug.HideTest do
   alias EbayClone.Plug.Hide
 
   describe "call" do
-    test "if the user is logged in return a 404", %{conn: conn} do
+    test "if the user is logged in it redirects them to /items", %{conn: conn} do
       {:ok, user} = create_user("foo@example.com", "test password")
       conn = conn
              |> bypass_through(EbayClone.Router, :browser)
@@ -17,11 +17,7 @@ defmodule EbayClone.Plug.HideTest do
     end
 
     test "if the user is not logged the connection is returned unchanged", %{conn: conn} do
-      conn = conn
-             |> Plug.Session.call(Plug.Session.init([store: :cookie,
-                                                     key: "ok",
-                                                     signing_salt: "1"]))
-             |> Hide.call(%{})
+      conn = get conn, registration_path(conn, :new)
 
       assert conn.status != 302
     end

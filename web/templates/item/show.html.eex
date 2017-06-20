@@ -24,6 +24,7 @@
 
   <li>
     <strong>Current price:</strong>
+    <%= find_current_price(@item.id) %>
   </li>
 
   <li>

@@ -6,7 +6,7 @@
       <th>User</th>
       <th>Name</th>
       <th>Description</th>
-      <th>Start price</th>
+      <th>Current price</th>
       <th>End date</th>
 
       <th></th>
@@ -18,7 +18,7 @@
       <td><%= item.user_id %></td>
       <td><%= item.name %></td>
       <td><%= item.description %></td>
-      <td><%= item.start_price %></td>
+      <td><%= find_current_price(item.id) %></td>
       <td><%= item.end_date %></td>
 
       <td class="text-right">

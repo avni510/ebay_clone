@@ -32,7 +32,7 @@ defmodule EbayClone.ItemController do
 
   def show(conn, %{"id" => id}) do
     item = Repo.get!(Item, id)
-    render(conn, "show.html", item: item)
+    render(conn, "show.html", item: item, changeset: Item.changeset(%Item{}, %{}))
   end
 
   def edit(conn, %{"id" => id}) do

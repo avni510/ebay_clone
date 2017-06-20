@@ -19,23 +19,10 @@ defmodule EbayClone.ItemTest do
       assert changeset.valid?
     end
 
-    test "changeset with invalid attributes" do
+    test "changeset with is invalid if there are no attributes" do
       changeset = Item.changeset(%Item{}, %{})
 
       refute changeset.valid?
-    end
-
-    test "changeset is invalid if a name is already taken" do
-      attrs = valid_attrs()
-      item = Item.changeset(%Item{}, attrs)
-      Repo.insert(item)
-
-      attrs = Map.merge(attrs, %{description: "foo"})
-      clone_attrs = %{attrs | start_price: 42}
-      item_clone = Item.changeset(%Item{}, clone_attrs)
-
-      assert {:error, changeset} = Repo.insert(item_clone)
-      assert changeset.errors[:name] == {"has already been taken", []}
     end
 
     test "changeset is invalid if user id does not exist" do
@@ -62,7 +49,7 @@ defmodule EbayClone.ItemTest do
       assert {:end_date, "can't be blank"} in errors_on(%Item{}, invalid_attrs)
     end
 
-    test "changeset is invalid if user_id does not exist" do
+    test "changeset is invalid if user_id does not exist in database" do
       invalid_attrs = %{valid_attrs() | user_id: -1}
       invalid_item = Item.changeset(%Item{}, invalid_attrs)
 
@@ -82,6 +69,12 @@ defmodule EbayClone.ItemTest do
                         end_date: %{DateTime.utc_now | year: DateTime.utc_now.year - 1}}
 
       assert {:end_date, "can't be a date in the past"} in errors_on(%Item{}, invalid_attrs)
+    end
+
+    test "changeset is invalid if price is less than 0" do
+      invalid_attrs = %{valid_attrs() | start_price: -5}
+
+      assert {:start_price, "can't be a number less than 0"} in errors_on(%Item{}, invalid_attrs)
     end
   end
 end

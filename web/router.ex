@@ -41,5 +41,7 @@ defmodule EbayClone.Router do
     get "/myitems", ItemController, :user_items_index
 
     delete "/logout", SessionController, :delete
+
+    post "/items/:id/bids", BidController, :create_item_bid
   end
 end

@@ -41,7 +41,7 @@ defmodule EbayClone.ItemControllerTest do
       conn = post conn, item_path(conn, :create), item: attrs
 
       assert redirected_to(conn) == item_path(conn, :index)
-      assert Repo.get_by(Item, name: attrs[:name])
+      assert Repo.get_by(Item, name: attrs.name)
     end
 
     test "does not create item and renders errors when data is invalid" do

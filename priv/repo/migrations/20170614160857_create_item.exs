@@ -11,8 +11,7 @@ defmodule EbayClone.Repo.Migrations.CreateItem do
 
       timestamps()
     end
-    create unique_index(:items, [:name])
-    create index(:items, [:user_id])
 
+    create index(:items, [:user_id])
   end
 end

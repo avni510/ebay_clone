@@ -23,10 +23,32 @@
   </li>
 
   <li>
+    <strong>Current price:</strong>
+  </li>
+
+  <li>
     <strong>End date:</strong>
     <%= @item.end_date %>
   </li>
 
 </ul>
+
+<%= form_for @changeset, bid_path(@conn, :create_item_bid, @item), [as: :bid], fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label for="bid_price">Enter Bid Price</label>
+    <input id="price" name="bid[price]" type="number" class= "form-control">
+    <%= error_tag f, :price %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
 
 <%= link "Back", to: item_path(@conn, :index) %>

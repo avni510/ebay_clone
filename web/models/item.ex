@@ -1,5 +1,6 @@
 defmodule EbayClone.Item do
   use EbayClone.Web, :model
+  import EbayClone.PriceValidation
 
   schema "items" do
     field :name, :string
@@ -17,18 +18,18 @@ defmodule EbayClone.Item do
     |> foreign_key_constraint(:user_id)
     |> validate_required([:name, :start_price, :end_date, :user_id])
     |> validate_future_date(:end_date)
-    |> unique_constraint(:name)
+    |> validate_positive_integer(:start_price)
   end
 
-  def validate_future_date(%{changes: changes} = changeset, field) do
+  defp validate_future_date(%{changes: changes} = changeset, field) do
     if date = changes[field] do
-      add_errors_to_changeset(changeset, field, date)
+      add_date_errors_to_changeset(changeset, field, date)
     else
       changeset
     end
   end
 
-  defp add_errors_to_changeset(changeset, field, date) do
+  defp add_date_errors_to_changeset(changeset, field, date) do
     today = DateTime.utc_now()
     if DateTime.compare(date, today) == :lt do
       changeset

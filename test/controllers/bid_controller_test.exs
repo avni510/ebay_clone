@@ -39,4 +39,9 @@ defmodule EbayClone.BidControllerTest do
       assert html_response(conn, 200) =~ "Show item"
     end
   end
+
+  describe "show_bids_per_user" do
+    test "it renders a template to display the users bids" do
+    end
+  end
 end

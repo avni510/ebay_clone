@@ -6,9 +6,24 @@ defmodule EbayClone.BidController do
 
   def create_item_bid(conn, %{"id" => id, "bid" => bid_params}) do
     current_user = Session.current_user(conn)
-    final_params = Map.merge(bid_params, %{"item_id" => id, "user_id" => current_user.id})
-    changeset = Bid.changeset(%Bid{}, final_params)
+    changeset = create_changeset(bid_params, id, current_user.id)
+    insert_bid(conn, changeset, id)
+  end
 
+  def show_bids_per_user(conn, _params) do
+    conn
+  end
+
+  def show_bids_per_item(conn, _params) do
+    conn
+  end
+
+  defp create_changeset(bid_params, item_id, user_id) do
+    final_params = Map.merge(bid_params, %{"item_id" => item_id, "user_id" => user_id})
+    Bid.changeset(%Bid{}, final_params)
+  end
+
+  defp insert_bid(conn, changeset, id) do
     case Repo.insert(changeset) do
       {:ok, _item} ->
         conn

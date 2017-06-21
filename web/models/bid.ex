@@ -2,10 +2,14 @@ defmodule EbayClone.Bid do
   use EbayClone.Web, :model
   import EbayClone.PriceValidation
 
+  alias EbayClone.Repo
+  alias EbayClone.Item
+  alias EbayClone.User
+
   schema "bids" do
     field :price, :integer
-    belongs_to :user, EbayClone.User
-    belongs_to :item, EbayClone.Item
+    belongs_to :user, User
+    belongs_to :item, Item
 
     timestamps()
   end
@@ -30,7 +34,7 @@ defmodule EbayClone.Bid do
 
   defp add_price_errors_to_changeset(changeset, field, bid_price, item_id) do
     if item_exists?(item_id) do
-      item_current_price = EbayClone.Item.current_price(item_id)
+      item_current_price = Item.current_price(item_id)
       determine_errors(changeset, field, bid_price, item_current_price)
     else
       changeset
@@ -38,7 +42,7 @@ defmodule EbayClone.Bid do
   end
 
   defp item_exists?(item_id) do
-    EbayClone.Repo.get(EbayClone.Item, item_id)
+    Repo.get(Item, item_id)
   end
 
   defp determine_errors(changeset, field, bid_price, item_current_price) do

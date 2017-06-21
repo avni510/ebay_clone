@@ -1,8 +1,8 @@
 defmodule EbayClone.PriceValidation do
   use EbayClone.Web, :model
 
-  def validate_positive_integer(%{changes: changes} = changeset, field) do
-    if number = changes[field] do
+  def validate_positive_integer(changeset, field) do
+    if number = get_change(changeset, field) do
       add_price_errors_to_changeset(changeset, field, number)
     else
       changeset

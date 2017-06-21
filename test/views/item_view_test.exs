@@ -1,8 +1,6 @@
 defmodule EbayClone.ItemViewTest do
   use EbayClone.ConnCase, async: true
   import EbayClone.ItemCase
-  import EbayClone.BidCase
-  import EbayClone.UserCase
 
   alias EbayClone.Item
   alias EbayClone.ItemView

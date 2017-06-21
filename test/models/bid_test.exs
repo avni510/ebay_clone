@@ -1,6 +1,7 @@
 defmodule EbayClone.BidTest do
   use EbayClone.ModelCase
   import EbayClone.ItemCase
+  import EbayClone.UserCase
 
   alias EbayClone.Bid
 
@@ -11,7 +12,8 @@ defmodule EbayClone.BidTest do
                               "item 1",
                               "foo",
                               42)
-    %{price: 42, user_id: item.user_id, item_id: item.id}
+    {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+    %{price: 100, user_id: user.id, item_id: item.id}
   end
 
   describe "changeset" do
@@ -59,6 +61,15 @@ defmodule EbayClone.BidTest do
       invalid_attrs = %{valid_attrs() | price: -5}
 
       assert {:price, "can't be a number less than 0"} in errors_on(%Bid{}, invalid_attrs)
+    end
+
+    test "changeset is invalid if prices is less than item current price" do
+      bid_1_changeset = Bid.changeset(%Bid{}, valid_attrs())
+      {:ok, bid_1} = Repo.insert(bid_1_changeset)
+      {:ok, user} = create_user("fakeuser@example.com", "password")
+      invalid_attrs = %{price: 50, user_id: user.id, item_id: bid_1.item_id}
+
+      assert {:price, "bid price cannot be less than current price"} in errors_on(%Bid{}, invalid_attrs)
     end
   end
 end

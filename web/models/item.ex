@@ -46,8 +46,9 @@ defmodule EbayClone.Item do
     end
   end
 
-  defp validate_future_date(%{changes: changes} = changeset, field) do
-    if date = changes[field] do
+  defp validate_future_date(changeset, field) do
+    date = get_change(changeset, field)
+    if date do
       add_date_errors_to_changeset(changeset, field, date)
     else
       changeset

@@ -1,10 +1,5 @@
 defmodule EbayClone.ItemView do
   use EbayClone.Web, :view
-  import Ecto.Query
-
-  alias EbayClone.Repo
-  alias EbayClone.Bid
-  alias EbayClone.Item
 
   def filter_for_future_date(items) do
     today = DateTime.utc_now()

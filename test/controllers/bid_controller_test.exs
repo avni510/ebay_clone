@@ -44,11 +44,11 @@ defmodule EbayClone.BidControllerTest do
   describe "show_bids_per_item" do
     test "it renders a template to display all the bids for an item", %{conn: conn} do
       {:ok, item_1} = create_item("foo@example.com",
-                  "test password",
-                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
-                  "item 1",
-                  "foo",
-                  42)
+                                  "test password",
+                                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                                  "item 1",
+                                  "foo",
+                                  42)
       {:ok, user_1} = create_user("bar@example.com", "fizzbuzz")
       create_bid(45, item_1.id, user_1.id)
       {:ok, user_2} = create_user("fakeuser@example.com", "fizzbuzz")
@@ -58,6 +58,32 @@ defmodule EbayClone.BidControllerTest do
       conn = get conn, bid_path(conn, :show_bids_per_item, item_1.id)
 
       assert html_response(conn, 200) =~ "Bids for #{item_1.name}"
+    end
+
+    test "returns a 404 if item does not exist", %{conn: conn} do
+      {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+      conn = conn |> assign(:current_user, user.id)
+      invalid_item_id = -1
+
+
+      assert_error_sent 404, fn ->
+        get conn, bid_path(conn, :show_bids_per_item, invalid_item_id)
+      end
+    end
+
+    test "if there are no bids for an item, a template is rendered to display that there are no bids", %{conn: conn} do
+      {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+      conn = conn |> assign(:current_user, user.id)
+      {:ok, item} = create_item("foo@example.com",
+                                "test password",
+                                %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                                "item 1",
+                                "foo",
+                                42)
+
+      conn = get conn, bid_path(conn, :show_bids_per_item, item.id)
+
+      assert html_response(conn, 200) =~ "There Are No Bids For This Item"
     end
   end
 
@@ -83,6 +109,25 @@ defmodule EbayClone.BidControllerTest do
       conn = get conn, bid_path(conn, :show_bids_per_user, user_1.id)
 
       assert html_response(conn, 200) =~ "Below is A List of All Your Bids"
+    end
+
+    test "returns a 404 if user does not exist", %{conn: conn} do
+      {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+      conn = conn |> assign(:current_user, user.id)
+      invalid_user_id = -1
+
+      assert_error_sent 404, fn ->
+        get conn, bid_path(conn, :show_bids_per_user, invalid_user_id)
+      end
+    end
+
+    test "if there are no bids for a user, a template is rendered to display that there are no bids", %{conn: conn} do
+      {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+      conn = conn |> assign(:current_user, user.id)
+
+      conn = get conn, bid_path(conn, :show_bids_per_user, user.id)
+
+      assert html_response(conn, 200) =~ "There Are No Bids For You"
     end
   end
 end

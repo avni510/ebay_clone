@@ -31,12 +31,10 @@ defmodule EbayClone.BidInteractorTest do
       assert List.first(bids_and_item_info).item_id == item_1.id
     end
 
-    test ":invalid_item is returned if the item does not exist" do
-      invalid_item_id = 1
+    test "error is raised if the item does not exist" do
+      invalid_item_id = -1
 
-      bids_and_item_info = BidInteractor.get_bids_for_item(invalid_item_id)
-
-      assert bids_and_item_info == :invalid_item
+      assert catch_error(BidInteractor.get_bids_for_item(invalid_item_id)).__struct__ == Ecto.NoResultsError
     end
 
     test ":no_bids is returned if there are no bids for an item" do
@@ -49,7 +47,7 @@ defmodule EbayClone.BidInteractorTest do
 
       bids_and_item_info = BidInteractor.get_bids_for_item(item.id)
 
-      assert bids_and_item_info == :no_bids
+      assert bids_and_item_info == nil
     end
   end
 
@@ -74,18 +72,16 @@ defmodule EbayClone.BidInteractorTest do
   end
 
   test ":invalid_user is returned if the user does not exist" do
-    invalid_user_id = 1
+    invalid_user_id = -1
 
-    bids_and_item_info = BidInteractor.get_bids_for_user(invalid_user_id)
-
-    assert bids_and_item_info == :invalid_user
+    assert catch_error(BidInteractor.get_bids_for_user(invalid_user_id)).__struct__ == Ecto.NoResultsError
   end
 
-  test ":no_bids is returned if there are no bids for an item" do
+  test "nil is returned if there are no bids for an item" do
     {:ok, user} = create_user("bar@example.com", "fizzbuzz")
 
     bids_and_item_info = BidInteractor.get_bids_for_user(user.id)
 
-    assert bids_and_item_info == :no_bids
+    assert bids_and_item_info == nil
   end
 end

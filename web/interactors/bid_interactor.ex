@@ -7,17 +7,13 @@ defmodule EbayClone.BidInteractor do
   alias EbayClone.User
 
   def get_bids_for_item(item_id) do
-    case item_exists?(item_id) do
-      nil -> :invalid_item
-      _ -> query_for_all_bids_for_item(item_id) |> return_value
-    end
+    Repo.get!(Item, item_id)
+    query_for_all_bids_for_item(item_id) |> return_value
   end
 
   def get_bids_for_user(user_id) do
-    case user_exists?(user_id) do
-      nil -> :invalid_user
-      _ -> query_for_all_bids_for_user(user_id) |> return_value
-    end
+    Repo.get!(User, user_id)
+    query_for_all_bids_for_user(user_id) |> return_value
   end
 
   defp query_for_all_bids_for_item(item_id) do
@@ -29,14 +25,6 @@ defmodule EbayClone.BidInteractor do
                 item_name: item.name,
                 item_id: item.id}
     Repo.all(query)
-  end
-
-  defp item_exists?(item_id) do
-    Repo.get(Item, item_id)
-  end
-
-  defp user_exists?(user_id) do
-    Repo.get(User, user_id)
   end
 
   defp query_for_all_bids_for_user(user_id) do
@@ -53,7 +41,7 @@ defmodule EbayClone.BidInteractor do
 
   defp return_value(all_entries) do
     case all_entries do
-      [] -> :no_bids
+      [] -> nil
       result -> result
     end
   end

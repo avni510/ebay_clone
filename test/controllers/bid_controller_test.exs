@@ -78,7 +78,7 @@ defmodule EbayClone.BidControllerTest do
                                 "bar",
                                 10)
       create_bid(25, item_2.id, user_1.id)
-      conn = conn |> assign(:current_user, user_1.id)
+      conn = build_conn() |> assign(:current_user, user_1.id)
 
       conn = get conn, bid_path(conn, :show_bids_per_user, user_1.id)
 

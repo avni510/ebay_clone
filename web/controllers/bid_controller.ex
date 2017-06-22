@@ -3,6 +3,7 @@ defmodule EbayClone.BidController do
 
   alias EbayClone.Session
   alias EbayClone.Bid
+  alias EbayClone.BidInteractor
 
   def create_item_bid(conn, %{"id" => id, "bid" => bid_params}) do
     current_user = Session.current_user(conn)
@@ -11,12 +12,18 @@ defmodule EbayClone.BidController do
   end
 
   def show_bids_per_item(conn, %{"id" => id}) do
-    items_and_bid_info = EbayClone.BidInteractor.get_bids_for_item(id)
-    render(conn, "item_bids_show.html", items_and_bid_info: items_and_bid_info)
+    case BidInteractor.get_bids_for_item(id) do
+      nil -> conn
+              |> put_status(404)
+              |> render(EbayClone.ErrorView, "404.html")
+      items_and_bid_info -> render(conn,
+                                   "item_bids_show.html",
+                                   items_and_bid_info: items_and_bid_info)
+    end
   end
 
   def show_bids_per_user(conn, %{"id" => id}) do
-    items_and_bid_info = EbayClone.BidInteractor.get_bids_for_user(id)
+    items_and_bid_info = BidInteractor.get_bids_for_user(id)
     render(conn, "user_bids_show.html", items_and_bid_info: items_and_bid_info)
   end
 

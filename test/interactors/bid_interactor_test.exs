@@ -30,6 +30,27 @@ defmodule EbayClone.BidInteractorTest do
       assert length(bids_and_item_info) == 1
       assert List.first(bids_and_item_info).item_id == item_1.id
     end
+
+    test ":invalid_item is returned if the item does not exist" do
+      invalid_item_id = 1
+
+      bids_and_item_info = BidInteractor.get_bids_for_item(invalid_item_id)
+
+      assert bids_and_item_info == :invalid_item
+    end
+
+    test ":no_bids is returned if there are no bids for an item" do
+      {:ok, item} = create_item("foo@example.com",
+                                  "test password",
+                                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                                  "item 1",
+                                  "foo",
+                                  42)
+
+      bids_and_item_info = BidInteractor.get_bids_for_item(item.id)
+
+      assert bids_and_item_info == :no_bids
+    end
   end
 
   describe "get_bids_for_user" do
@@ -50,5 +71,21 @@ defmodule EbayClone.BidInteractorTest do
       assert length(bids_and_item_info) == 1
       assert List.first(bids_and_item_info).bid_user_id == user_1.id
     end
+  end
+
+  test ":invalid_user is returned if the user does not exist" do
+    invalid_user_id = 1
+
+    bids_and_item_info = BidInteractor.get_bids_for_user(invalid_user_id)
+
+    assert bids_and_item_info == :invalid_user
+  end
+
+  test ":no_bids is returned if there are no bids for an item" do
+    {:ok, user} = create_user("bar@example.com", "fizzbuzz")
+
+    bids_and_item_info = BidInteractor.get_bids_for_user(user.id)
+
+    assert bids_and_item_info == :no_bids
   end
 end

@@ -52,4 +52,11 @@
   </div>
 <% end %>
 
+<%= link "Show All Bids For This Item",
+    to: bid_path(@conn, :show_bids_per_item, @item),
+    class: "btn btn-default btn-xs" %>
+
+<br/>
+<br/>
+
 <%= link "Back", to: item_path(@conn, :index) %>

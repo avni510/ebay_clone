@@ -1,6 +1,7 @@
 defmodule EbayClone.BidControllerTest do
   use EbayClone.ConnCase
   import EbayClone.ItemCase
+  import EbayClone.BidCase
 
   alias EbayClone.Bid
 
@@ -40,8 +41,28 @@ defmodule EbayClone.BidControllerTest do
     end
   end
 
+  describe "show_bids_per_item" do
+    test "it renders a template to display all the bids for an item", %{conn: conn} do
+      {:ok, item_1} = create_item("foo@example.com",
+                  "test password",
+                  %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                  "item 1",
+                  "foo",
+                  42)
+      {:ok, user_1} = create_user("bar@example.com", "fizzbuzz")
+      conn = conn |> assign(:current_user, user_1.id)
+      create_bid(45, item_1.id, user_1.id)
+      {:ok, user_2} = create_user("fakeuser@example.com", "fizzbuzz")
+      create_bid(70, item_1.id, user_2.id)
+
+      conn = get conn, bid_path(conn, :show_bids_per_item, item_1.id)
+
+      assert html_response(conn, 200) =~ "Bids for #{item_1.name}"
+    end
+  end
+
   describe "show_bids_per_user" do
-    test "it renders a template to display the users bids" do
+    test "it renders a template to display all the bids for a user" do
     end
   end
 end

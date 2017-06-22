@@ -50,10 +50,10 @@ defmodule EbayClone.BidControllerTest do
                   "foo",
                   42)
       {:ok, user_1} = create_user("bar@example.com", "fizzbuzz")
-      conn = conn |> assign(:current_user, user_1.id)
       create_bid(45, item_1.id, user_1.id)
       {:ok, user_2} = create_user("fakeuser@example.com", "fizzbuzz")
       create_bid(70, item_1.id, user_2.id)
+      conn = conn |> assign(:current_user, user_1.id)
 
       conn = get conn, bid_path(conn, :show_bids_per_item, item_1.id)
 
@@ -63,6 +63,26 @@ defmodule EbayClone.BidControllerTest do
 
   describe "show_bids_per_user" do
     test "it renders a template to display all the bids for a user" do
+      {:ok, item_1} = create_item("foo@example.com",
+                                "test password",
+                                %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                                "item 1",
+                                "foo",
+                                10)
+      {:ok, user_1} = create_user("bar@example.com", "fizzbuzz")
+      create_bid(20, item_1.id, user_1.id)
+      {:ok, item_2} = create_item("foobar@example.com",
+                                "test password",
+                                %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
+                                "item 2",
+                                "bar",
+                                10)
+      create_bid(25, item_2.id, user_1.id)
+      conn = conn |> assign(:current_user, user_1.id)
+
+      conn = get conn, bid_path(conn, :show_bids_per_user, user_1.id)
+
+      assert html_response(conn, 200) =~ "Below is A List of All Your Bids"
     end
   end
 end

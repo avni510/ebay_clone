@@ -1,0 +1,28 @@
+<h2> Below is A List of All Your Bids </h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Item Name:</th>
+      <th>Bid Price:</th>
+      <th>Bid Date:</th>
+      <th>Link to Item:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for item_and_bid <- @items_and_bid_info do %>
+      <tr>
+        <td><%= item_and_bid.item_name %></td>
+        <td><%= item_and_bid.bid_price %></td>
+        <td><%= item_and_bid.bid_inserted_at %></td>
+        <td><%= link "Item Page",
+                to: item_path(@conn,
+                              :show,
+                              item_and_bid.item_id),
+                class: "btn btn-default btn-xs" %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

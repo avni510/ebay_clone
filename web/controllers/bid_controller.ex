@@ -15,7 +15,9 @@ defmodule EbayClone.BidController do
     render(conn, "item_bids_show.html", items_and_bid_info: items_and_bid_info)
   end
 
-  def show_bids_per_user(conn, _params) do
+  def show_bids_per_user(conn, %{"id" => id}) do
+    items_and_bid_info = EbayClone.BidInteractor.get_bids_for_user(id)
+    render(conn, "user_bids_show.html", items_and_bid_info: items_and_bid_info)
   end
 
   defp create_changeset(bid_params, item_id, user_id) do

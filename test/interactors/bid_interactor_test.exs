@@ -43,7 +43,7 @@ defmodule EbayClone.BidInteractorTest do
       {:ok, user_1} = create_user("bar@example.com", "fizzbuzz")
       {:ok, user_2} = create_user("fakeuser@example.com", "fizzbuzz")
       create_bid(20, item.id, user_1.id)
-      create_bid(20, item.id, user_2.id)
+      create_bid(25, item.id, user_2.id)
 
       bids_and_item_info = BidInteractor.get_bids_for_user(user_1.id)
 

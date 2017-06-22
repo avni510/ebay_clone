@@ -13,6 +13,9 @@
       <li><%= current_user(@conn).email %> </li>
       <li><%= link "Logout", to: session_path(@conn, :delete), method: :delete %></li>
       <li><%= link "See My Items", to: item_path(@conn, :user_items_index) %></li>
+      <li><%= link "See All My Bids", to: bid_path(@conn,
+                                                   :show_bids_per_user,
+                                                   current_user(@conn).id) %></li>
     <%= else %>
       <li><%= link "Login", to: session_path(@conn, :new) %></li>
       <li><%= link "Register", to: registration_path(@conn, :new) %></li>

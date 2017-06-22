@@ -17,8 +17,14 @@ defmodule EbayClone.BidController do
   end
 
   def show_bids_per_user(conn, %{"id" => id}) do
-    items_and_bid_info = BidInteractor.get_bids_for_user(id)
-    render(conn, "user_bids_show.html", items_and_bid_info: items_and_bid_info)
+    {idVal, _} = Integer.parse(id)
+    current_user = Session.current_user(conn)
+    if current_user.id == idVal do
+      items_and_bid_info = BidInteractor.get_bids_for_user(id)
+      render(conn, "user_bids_show.html", items_and_bid_info: items_and_bid_info)
+    else
+      conn |> send_resp(404, "Page Not Found")
+    end
   end
 
   defp create_changeset(bid_params, item_id, user_id) do

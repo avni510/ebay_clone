@@ -116,9 +116,9 @@ defmodule EbayClone.BidControllerTest do
       conn = conn |> assign(:current_user, user.id)
       invalid_user_id = -1
 
-      assert_error_sent 404, fn ->
-        get conn, bid_path(conn, :show_bids_per_user, invalid_user_id)
-      end
+      conn = get conn, bid_path(conn, :show_bids_per_user, invalid_user_id)
+
+      assert conn.status == 404
     end
 
     test "if there are no bids for a user, a template is rendered to display that there are no bids", %{conn: conn} do
@@ -128,6 +128,16 @@ defmodule EbayClone.BidControllerTest do
       conn = get conn, bid_path(conn, :show_bids_per_user, user.id)
 
       assert html_response(conn, 200) =~ "There Are No Bids For You"
+    end
+
+    test "a user should only be able to see their bids and not others", %{conn: conn} do
+      {:ok, user_1} = create_user("foo@example.com", "fizzbuzz")
+      {:ok, user_2} = create_user("bar@example.com", "test password")
+      conn = conn |> assign(:current_user, user_1.id)
+
+      conn = get conn, bid_path(conn, :show_bids_per_user, user_2.id)
+
+      assert conn.status == 404
     end
   end
 end

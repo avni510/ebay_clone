@@ -27,4 +27,4 @@
   </table>
   <%= end %>
 <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-<script> require("web/static/js/app").App.run("td[data-datetime]")</script>
+<script> require("web/static/js/app").App.run(document.querySelectorAll("td[data-datetime]"))</script>

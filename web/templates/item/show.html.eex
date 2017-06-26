@@ -61,4 +61,4 @@
 
 <%= link "Back", to: item_path(@conn, :index) %>
 <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-<script> require("web/static/js/app").App.run("div[data-datetime]")</script>
+<script> require("web/static/js/app").App.run(document.querySelectorAll("div[data-datetime]"))</script>

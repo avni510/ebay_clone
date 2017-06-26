@@ -1,20 +1,64 @@
-# EbayClone
+EbayClone
+---------
+This app allows users to post up items for sale and bid on items 
 
-To start your Phoenix app:
+Installation
+------------
+Clone the git repository
+```
+https://github.com/avni510/ebay_clone.git
+```
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+`cd` into the directory
+```
+$ cd ebay_clone
+```
+
+Run EbayClone
+-------------
+ Install dependencies 
+```
+$ mix deps.get
+```
+
+Create and migrate your database 
+```
+$ mix ecto.create && mix ecto.migrate
+```
+
+Install Node.js dependencies 
+```
+$ npm install
+```
+
+Start server 
+```
+$ mix phoenix.server
+```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+# Run the Tests
+Run all the tests
+```
+$ mix test && npm test
+```
 
-## Learn more
+Run all elixir tests
+```
+$ mix test
+```
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+Run all javascript tests
+```
+$ npm test
+```
+
+Auto test runner for elixir tests
+```
+$ mix test.watch
+```
+
+
+
+

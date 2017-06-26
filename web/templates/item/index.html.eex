@@ -13,20 +13,22 @@
     </tr>
   </thead>
   <tbody>
-<%= for item <- filter_for_future_date(@items) do %>
-    <tr>
-      <td><%= item.user_id %></td>
-      <td><%= item.name %></td>
-      <td><%= item.description %></td>
-      <td><%= EbayClone.Item.current_price(item.id) %></td>
-      <td><%= item.end_date %></td>
+    <%= for item <- filter_for_future_date(@items) do %>
+      <tr>
+        <td><%= item.user_id %></td>
+        <td><%= item.name %></td>
+        <td><%= item.description %></td>
+        <td><%= EbayClone.Item.current_price(item.id) %></td>
+        <td data-datetime><%= item.end_date %></td>
 
-      <td class="text-right">
-        <%= link "Show", to: item_path(@conn, :show, item), class: "btn btn-default btn-xs" %>
-      </td>
-    </tr>
-<% end %>
+        <td class="text-right">
+          <%= link "Show", to: item_path(@conn, :show, item), class: "btn btn-default btn-xs" %>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
 <%= link "New item", to: item_path(@conn, :new) %>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script> require("web/static/js/app").App.run("td[data-datetime]")</script>

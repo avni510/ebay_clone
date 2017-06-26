@@ -17,7 +17,7 @@
         <tr>
           <td><%= item_and_bid.item_name %></td>
           <td><%= item_and_bid.bid_price %></td>
-          <td><%= item_and_bid.bid_inserted_at %></td>
+          <td data-datetime><%= item_and_bid.bid_inserted_at %></td>
           <td><%= link "Item Page",
                   to: item_path(@conn,
                                 :show,
@@ -28,3 +28,5 @@
     </tbody>
   </table>
 <%= end %>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script> require("web/static/js/app").App.run("td[data-datetime]")</script>

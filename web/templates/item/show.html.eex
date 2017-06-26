@@ -29,7 +29,7 @@
 
   <li>
     <strong>End date:</strong>
-    <%= @item.end_date %>
+    <div data-datetime> <%= @item.end_date %> </div>
   </li>
 
 </ul>
@@ -60,3 +60,5 @@
 <br/>
 
 <%= link "Back", to: item_path(@conn, :index) %>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script> require("web/static/js/app").App.run("div[data-datetime]")</script>

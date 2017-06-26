@@ -12,17 +12,19 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Bid Date:</th>
+        <th>Bid Date And Time:</th>
         <th>Bid Price:</th>
       </tr>
     </thead>
     <tbody>
     <%= for item_and_bid <- @items_and_bid_info do %>
       <tr>
-        <td><%= item_and_bid.bid_inserted_at %></td>
+        <td data-datetime><%= item_and_bid.bid_inserted_at %></td>
         <td><%= item_and_bid.bid_price %></td>
       </tr>
     <% end %>
     </tbody>
   </table>
-<%= end %>
+  <%= end %>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script> require("web/static/js/app").App.run("td[data-datetime]")</script>

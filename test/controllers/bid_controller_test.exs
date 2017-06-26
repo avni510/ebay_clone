@@ -2,6 +2,7 @@ defmodule EbayClone.BidControllerTest do
   use EbayClone.ConnCase
   import EbayClone.ItemCase
   import EbayClone.BidCase
+  import EbayClone.UserCase
 
   alias EbayClone.Bid
 

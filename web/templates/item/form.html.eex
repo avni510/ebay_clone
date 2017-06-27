@@ -68,7 +68,7 @@
 
     <%= error_tag f, :end_date %>
   </div>
-  <p> Please enter all times in UTC </p>
+  <p> Please enter all times in UTC with an end time of midnight</p>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

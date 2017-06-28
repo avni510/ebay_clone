@@ -26,6 +26,7 @@ defmodule EbayClone.Item do
     |> validate_required([:name, :start_price, :end_date, :user_id, :awarded])
     |> validate_future_date(:end_date)
     |> validate_positive_integer(:start_price)
+    |> foreign_key_constraint(:winner_id)
   end
 
   def current_price(item_id) do

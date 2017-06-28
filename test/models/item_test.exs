@@ -78,6 +78,14 @@ defmodule EbayClone.ItemTest do
 
       assert {:start_price, "can't be a number less than 0"} in errors_on(%Item{}, invalid_attrs)
     end
+
+    test "changeset is invalid if winner_id does not reference a user_id from the users table" do
+      invalid_attrs = Map.put(valid_attrs(), :winner_id, -1)
+      invalid_item = Item.changeset(%Item{}, invalid_attrs)
+
+      assert {:error, changeset} = Repo.insert(invalid_item)
+      assert changeset.errors[:winner_id] == {"does not exist", []}
+    end
   end
 
   describe "current_price" do

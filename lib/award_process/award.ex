@@ -1,35 +1,20 @@
-defmodule EbayClone.Awarder do
-  use GenServer
+defmodule EbayClone.AwardProcess.Award do
   import Ecto.Query
 
   alias EbayClone.Repo
   alias EbayClone.Item
 
-  def start_link do
-    GenServer.start_link(__MODULE__, %{})
-  end
-
-  def init(state) do
-    execute()
-    {:ok, state}
-  end
-
-  def handle_info(:award, state) do
-    execute()
-    {:noreply, state}
-  end
-
-  defp execute() do
+  def execute do
     items_to_be_updated = Repo.all(query())
     Enum.map(items_to_be_updated, fn(item) -> update_item(item) end)
-    one_second = 60 * 1000
-    Process.send_after(self(), :award, one_second)
+    twenty_four_hours = 24 * 60 * 60 * 1000
+    Process.send_after(self(), :award, twenty_four_hours)
   end
 
   defp query do
     date = DateTime.utc_now()
     from item in Item,
-      where: item.end_date < ^date and
+      where: item.end_date <= ^date and
              item.awarded == false
   end
 

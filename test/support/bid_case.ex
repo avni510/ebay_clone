@@ -1,5 +1,4 @@
 defmodule EbayClone.BidCase do
-  import EbayClone.ItemCase
 
   alias EbayClone.Bid
   alias EbayClone.Repo

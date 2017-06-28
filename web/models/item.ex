@@ -13,6 +13,7 @@ defmodule EbayClone.Item do
     field :end_date, :utc_datetime
     belongs_to :user, EbayClone.User
     field :awarded, :boolean
+    belongs_to :winner, EbayClone.User
 
     timestamps()
   end
@@ -20,7 +21,7 @@ defmodule EbayClone.Item do
   def changeset(struct, params \\ %{}) do
     struct
     |> set_default_awarded_flag
-    |> cast(params, [:name, :description, :start_price, :end_date, :user_id, :awarded])
+    |> cast(params, [:name, :description, :start_price, :end_date, :user_id, :awarded, :winner_id])
     |> foreign_key_constraint(:user_id)
     |> validate_required([:name, :start_price, :end_date, :user_id, :awarded])
     |> validate_future_date(:end_date)
@@ -32,7 +33,7 @@ defmodule EbayClone.Item do
     retrieve_price(all_bid_prices, item_id)
   end
 
-  def get_all_prices(item_id) do
+  defp get_all_prices(item_id) do
     query = from bid in Bid,
       where: bid.item_id == ^item_id,
       select: bid.price

@@ -21,7 +21,8 @@ defmodule EbayClone.CloseProcess.Close do
 
   defp update_item(item) do
     winner_id = get_winner_id(item)
-    changeset = Item.changeset(item, %{is_closed: true, winner_id: winner_id})
+    changeset = Item.changeset(item, %{is_closed: true,
+                                       winner_id: winner_id})
     Repo.update(changeset)
   end
 
@@ -34,6 +35,6 @@ defmodule EbayClone.CloseProcess.Close do
 
   defp get_winner_id(item) do
     bid = Repo.one(find_highest_bid_query(item))
-    bid.user_id
+    if bid, do: bid.user_id, else: nil
   end
 end

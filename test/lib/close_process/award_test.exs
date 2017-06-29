@@ -1,10 +1,10 @@
-defmodule EbayClone.AwardProcess.AwardTest do
+defmodule EbayClone.CloseProcess.CloseTest do
   use EbayClone.ConnCase
   import EbayClone.ItemCase
   import EbayClone.BidCase
   import EbayClone.UserCase
 
-  alias EbayClone.AwardProcess.Award
+  alias EbayClone.CloseProcess.Close
   alias EbayClone.Item
   alias EbayClone.Repo
 
@@ -31,10 +31,10 @@ defmodule EbayClone.AwardProcess.AwardTest do
       create_bid(30, item_2.id, user_2.id)
       :timer.sleep(1000)
 
-      Award.execute()
+      Close.execute()
 
       updated_item = Repo.get(Item, item_1.id)
-      assert updated_item.awarded == true
+      assert updated_item.is_closed == true
       assert updated_item.winner_id == user_1.id
     end
 
@@ -52,10 +52,10 @@ defmodule EbayClone.AwardProcess.AwardTest do
                                   "test description",
                                   10)
 
-      Award.execute()
+      Close.execute()
 
       item = Repo.get(Item, item_2.id)
-      assert item.awarded == false
+      assert item.is_closed == false
       assert item.winner_id == nil
     end
   end

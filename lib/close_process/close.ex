@@ -1,4 +1,4 @@
-defmodule EbayClone.AwardProcess.Award do
+defmodule EbayClone.CloseProcess.Close do
   import Ecto.Query
 
   alias EbayClone.Repo
@@ -9,19 +9,19 @@ defmodule EbayClone.AwardProcess.Award do
     items_to_be_updated = Repo.all(items_to_be_awarded_query())
     Enum.map(items_to_be_updated, fn(item) -> update_item(item) end)
     twenty_four_hours = 24 * 60 * 60 * 1000
-    Process.send_after(self(), :award, twenty_four_hours)
+    Process.send_after(self(), :close, twenty_four_hours)
   end
 
   defp items_to_be_awarded_query do
     date = DateTime.utc_now()
     from item in Item,
       where: item.end_date <= ^date and
-             item.awarded == false
+             item.is_closed == false
   end
 
   defp update_item(item) do
     winner_id = get_winner_id(item)
-    changeset = Item.changeset(item, %{awarded: true, winner_id: winner_id})
+    changeset = Item.changeset(item, %{is_closed: true, winner_id: winner_id})
     Repo.update(changeset)
   end
 

@@ -3,7 +3,7 @@ defmodule EbayClone.Repo.Migrations.UpdateItemsTable do
 
   def change do
     alter table(:items) do
-      add :awarded, :boolean, null: false, default: false
+      add :is_closed, :boolean, null: false, default: false
     end
   end
 end

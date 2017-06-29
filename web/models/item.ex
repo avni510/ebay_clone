@@ -12,7 +12,7 @@ defmodule EbayClone.Item do
     field :start_price, :integer
     field :end_date, :utc_datetime
     belongs_to :user, EbayClone.User
-    field :awarded, :boolean
+    field :is_closed, :boolean
     belongs_to :winner, EbayClone.User
 
     timestamps()
@@ -20,10 +20,10 @@ defmodule EbayClone.Item do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> set_default_awarded_flag
-    |> cast(params, [:name, :description, :start_price, :end_date, :user_id, :awarded, :winner_id])
+    |> set_default_is_closed_flag
+    |> cast(params, [:name, :description, :start_price, :end_date, :user_id, :is_closed, :winner_id])
     |> foreign_key_constraint(:user_id)
-    |> validate_required([:name, :start_price, :end_date, :user_id, :awarded])
+    |> validate_required([:name, :start_price, :end_date, :user_id, :is_closed])
     |> validate_future_date(:end_date)
     |> validate_positive_integer(:start_price)
     |> foreign_key_constraint(:winner_id)
@@ -41,8 +41,8 @@ defmodule EbayClone.Item do
     Repo.all(query)
   end
 
-  defp set_default_awarded_flag(struct) do
-    %{struct | awarded: false}
+  defp set_default_is_closed_flag(struct) do
+    %{struct | is_closed: false}
   end
 
   defp retrieve_price(all_prices, item_id) do

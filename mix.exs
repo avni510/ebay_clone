@@ -16,7 +16,7 @@ defmodule EbayClone.Mixfile do
   def application do
     [mod: {EbayClone, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :bamboo]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -32,7 +32,9 @@ defmodule EbayClone.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
-     {:comeonin, "~> 1.0"}]
+     {:comeonin, "~> 1.0"},
+     {:bamboo, "~> 0.7"},
+     {:bamboo_smtp, "~> 1.2.1"}]
   end
 
   defp aliases do

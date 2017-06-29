@@ -1,5 +1,5 @@
 defmodule EbayClone.UserTest do
-  use EbayClone.ModelCase
+  use EbayClone.ModelCase, aysnc: true
 
   alias EbayClone.User
 

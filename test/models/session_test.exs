@@ -1,5 +1,5 @@
 defmodule EbayClone.SessionTest do
-  use EbayClone.ModelCase
+  use EbayClone.ModelCase, aysnc: true
   use Phoenix.ConnTest
   import EbayClone.UserCase
 

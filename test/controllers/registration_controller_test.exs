@@ -1,5 +1,5 @@
 defmodule EbayClone.RegistrationControllerTest do
-  use EbayClone.ConnCase
+  use EbayClone.ConnCase, async: true
 
   describe "new" do
     test "a page to create an account is displayed", %{conn: conn} do

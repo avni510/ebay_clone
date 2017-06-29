@@ -1,5 +1,5 @@
 defmodule EbayClone.ItemTest do
-  use EbayClone.ModelCase
+  use EbayClone.ModelCase, async: true
   import EbayClone.UserCase
   import EbayClone.ItemCase
   import EbayClone.BidCase

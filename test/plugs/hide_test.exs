@@ -1,5 +1,5 @@
 defmodule EbayClone.Plugs.HideTest do
-  use EbayClone.ConnCase
+  use EbayClone.ConnCase, async: true
   import EbayClone.UserCase
 
   alias EbayClone.Plugs.Hide

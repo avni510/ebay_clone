@@ -27,11 +27,6 @@ config :logger, :console,
 import_config "#{Mix.env}.exs"
 
 config :ebay_clone, EbayClone.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "smtp.domain",
-  port: 1025,
-  username: System.get_env("SMTP_USERNAME"),
-  password: System.get_env("SMTP_PASSWORD"),
-  tls: :if_available, # can be `:always` or `:never`
-  ssl: false, # can be `true`
-  retries: 1
+  adapter: Bamboo.SendgridAdapter,
+  api_key: System.get_env("API_KEY")
+

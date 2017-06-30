@@ -11,7 +11,7 @@ defmodule EbayClone.EmailTest do
 
       email = Email.winner_email(email_address, item_name, winning_price)
 
-      assert email.text_body == "You've won Test Item with a winning price of 5"
+      assert email.text_body == "You've won Test Item with a winning price of $5"
     end
   end
 end

@@ -1,5 +1,6 @@
 defmodule EbayClone.CloseProcess.CloseTest do
   use EbayClone.ConnCase
+  use Bamboo.Test
   import EbayClone.ItemCase
   import EbayClone.BidCase
   import EbayClone.UserCase
@@ -12,17 +13,17 @@ defmodule EbayClone.CloseProcess.CloseTest do
     test "when there are bids for an item, it changes the item is_closed
           attribute to true and updates the winner_id for items with an
           end date in the past the is_closed set to false" do
-      {:ok, item_1} = create_item("foo@example.com",
+      {:ok, item_1} = create_item("testuser@example.com",
                                   "test password",
                                   %{DateTime.utc_now | second: DateTime.utc_now.second + 1},
                                   "item 1",
                                   "bar",
                                   42)
-      {:ok, user_1} = create_user("testuser@example.com", "test password")
+      {:ok, user_1} = create_user("foo@example.com", "test password")
       {:ok, user_2} = create_user("fakeuser@example.com", "fizzbuzz")
       create_bid(50, item_1.id, user_1.id)
       create_bid(60, item_1.id, user_2.id)
-      create_bid(90, item_1.id, user_1.id)
+      {:ok, winning_bid} = create_bid(90, item_1.id, user_1.id)
       {:ok, item_2} = create_item("bar@example.com",
                                   "test password",
                                   %{DateTime.utc_now | year: DateTime.utc_now.year + 1},
@@ -38,6 +39,10 @@ defmodule EbayClone.CloseProcess.CloseTest do
       updated_item = Repo.get(Item, item_1.id)
       assert updated_item.is_closed == true
       assert updated_item.winner_id == user_1.id
+      assert_delivered_email EbayClone.Email.winner_email(user_1.email,
+                                                          updated_item.name,
+                                                          winning_bid.price)
+
     end
 
     test "when there are no bids for an item, it changes the item is_closed
@@ -55,6 +60,7 @@ defmodule EbayClone.CloseProcess.CloseTest do
       updated_item = Repo.get(Item, item_1.id)
       assert updated_item.is_closed == true
       assert updated_item.winner_id == nil
+      assert_delivered_email EbayClone.Email.no_bids_email("foo@example.com", updated_item.name)
     end
 
     test "it does not change the item is_closed attribute to true and does not

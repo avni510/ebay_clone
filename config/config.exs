@@ -22,11 +22,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :ebay_clone, EbayClone.Mailer,
+  adapter: Bamboo.SendgridAdapter,
+  api_key: System.get_env("API_KEY")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
 
-config :ebay_clone, EbayClone.Mailer,
-  adapter: Bamboo.SendgridAdapter,
-  api_key: System.get_env("API_KEY")
 

@@ -2,6 +2,7 @@ defmodule EbayClone.RegistrationController do
   use EbayClone.Web, :controller
 
   alias EbayClone.User
+  alias EbayClone.UserInteractor
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})
@@ -11,7 +12,7 @@ defmodule EbayClone.RegistrationController do
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
 
-    case EbayClone.Registration.create(changeset, EbayClone.Repo) do
+    case UserInteractor.register(changeset, EbayClone.Repo) do
       {:ok, changeset} ->
         conn
         |> put_session(:current_user, changeset.id)

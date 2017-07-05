@@ -1,7 +1,7 @@
-defmodule EbayClone.Registration do
+defmodule EbayClone.UserInteractor do
   import Ecto.Changeset, only: [put_change: 3]
 
-  def create(changeset, repo) do
+  def register(changeset, repo) do
     changeset
     |> put_change(:crypted_password,
                   hashed_password(changeset.params["password"]))

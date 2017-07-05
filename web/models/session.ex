@@ -17,7 +17,8 @@ defmodule EbayClone.Session do
   end
 
   def current_user(conn) do
-    id = conn.assigns[:current_user] || Plug.Conn.fetch_session(conn) |> Plug.Conn.get_session(:current_user)
+    id = conn.assigns[:current_user] || Plug.Conn.fetch_session(conn)
+         |> Plug.Conn.get_session(:current_user)
     if id, do: EbayClone.Repo.get(User, id)
   end
 

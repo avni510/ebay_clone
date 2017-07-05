@@ -3,7 +3,7 @@ defmodule EbayClone.ItemController do
 
   alias EbayClone.Item
   alias EbayClone.ItemInteractor
-  alias EbayClone.Session
+  alias EbayClone.SessionInteractor
 
   def index(conn, _params) do
     items = Repo.all(Item)
@@ -16,7 +16,7 @@ defmodule EbayClone.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
-    current_user = Session.current_user(conn)
+    current_user = SessionInteractor.current_user(conn)
     params_with_user_id = Map.merge(item_params, %{"user_id" => current_user.id})
     changeset = Item.changeset(%Item{}, params_with_user_id)
 
@@ -60,7 +60,7 @@ defmodule EbayClone.ItemController do
   end
 
   def user_items_index(conn, _params) do
-    user = Session.current_user(conn)
+    user = SessionInteractor.current_user(conn)
     items = ItemInteractor.get_items_for_user_id(user.id)
     render(conn, "index.html", items: items)
   end

@@ -1,9 +1,9 @@
-defmodule EbayClone.SessionTest do
+defmodule EbayClone.SessionInteractorTest do
   use EbayClone.ModelCase, aysnc: true
   use Phoenix.ConnTest
   import EbayClone.UserCase
 
-  alias EbayClone.Session
+  alias EbayClone.SessionInteractor
   alias EbayClone.Repo
 
   describe "login" do
@@ -11,7 +11,7 @@ defmodule EbayClone.SessionTest do
       {:ok, registered_user} = create_user("foo@example.com", "test password")
       params =  %{"email" => registered_user.email, "password" => "test password"}
 
-      {:ok, current_user} = Session.login(params, Repo)
+      {:ok, current_user} = SessionInteractor.login(params, Repo)
 
       assert current_user.email == registered_user.email
     end
@@ -20,14 +20,14 @@ defmodule EbayClone.SessionTest do
       {:ok, registered_user} = create_user("foo@example.com", "test password")
       params =  %{"email" => registered_user.email, "password" => "1234"}
 
-      assert :error == Session.login(params, Repo)
+      assert :error == SessionInteractor.login(params, Repo)
     end
 
     test "an error is returned if the user does not exist" do
       create_user("foo@example.com", "test password")
       params =  %{"email" => "bar@example.com", "password" => "1234"}
 
-      assert :error == Session.login(params, Repo)
+      assert :error == SessionInteractor.login(params, Repo)
     end
   end
 
@@ -36,7 +36,7 @@ defmodule EbayClone.SessionTest do
       {:ok, registered_user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, registered_user.id)
 
-      current_user = Session.current_user(conn)
+      current_user = SessionInteractor.current_user(conn)
 
       assert current_user.email == registered_user.email
     end
@@ -46,7 +46,7 @@ defmodule EbayClone.SessionTest do
                                                                   key: "ok",
                                                                   signing_salt: "1"]))
 
-      current_user = Session.current_user(conn)
+      current_user = SessionInteractor.current_user(conn)
 
       assert current_user == nil
     end
@@ -57,7 +57,7 @@ defmodule EbayClone.SessionTest do
       {:ok, registered_user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, registered_user.id)
 
-      result = Session.logged_in?(conn)
+      result = SessionInteractor.logged_in?(conn)
 
       assert result == true
     end
@@ -67,7 +67,7 @@ defmodule EbayClone.SessionTest do
                                                                   key: "ok",
                                                                   signing_salt: "1"]))
 
-      result = Session.logged_in?(conn)
+      result = SessionInteractor.logged_in?(conn)
 
       assert result == false
     end

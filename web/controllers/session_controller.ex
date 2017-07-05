@@ -1,12 +1,14 @@
 defmodule EbayClone.SessionController do
   use EbayClone.Web, :controller
 
+  alias EbayClone.SessionInteractor
+
   def new(conn, _params) do
     render conn, "new.html"
   end
 
   def create(conn, %{"session" => session_params}) do
-    case EbayClone.Session.login(session_params, EbayClone.Repo) do
+    case SessionInteractor.login(session_params, EbayClone.Repo) do
       {:ok, user} ->
         conn
         |> put_session(:current_user, user.id)

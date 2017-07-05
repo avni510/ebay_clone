@@ -1,5 +1,6 @@
 defmodule EbayClone.UserInteractorTest do
   use EbayClone.ModelCase
+  import EbayClone.UserCase
 
   alias EbayClone.UserInteractor
   alias EbayClone.User
@@ -23,6 +24,16 @@ defmodule EbayClone.UserInteractorTest do
       UserInteractor.register(changeset, Repo)
 
       assert Repo.aggregate(User, :count, :id) == 1
+    end
+  end
+
+  describe "authenticate" do
+    test "it returns true if the password entered matches the user's password" do
+      {:ok, user} = create_user("foo@example.com", "test password")
+
+      result = UserInteractor.check_password(user, "test password")
+
+      assert result == true
     end
   end
 end

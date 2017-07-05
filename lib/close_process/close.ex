@@ -11,8 +11,6 @@ defmodule EbayClone.CloseProcess.Close do
   def execute do
     items_to_be_updated = Repo.all(items_to_be_awarded_query())
     Enum.map(items_to_be_updated, fn(item) -> update_item(item) end)
-    twenty_four_hours = 24 * 60 * 60 * 1000
-    Process.send_after(self(), :close, twenty_four_hours)
   end
 
   defp items_to_be_awarded_query do

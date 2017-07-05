@@ -1,10 +1,18 @@
 import { Converter } from "web/static/js/convert_time";
+import { Clock } from "web/static/js/clock";
 
 export var App = {
   run: function(tag) {
     Converter.execute(tag)
   }
 }
+
+export var Time = {
+  run: function() {
+    Clock.run()
+  }
+}
+//
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".

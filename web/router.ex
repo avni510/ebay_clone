@@ -25,6 +25,8 @@ defmodule EbayClone.Router do
     get "/login", SessionController, :new
 
     post "/login", SessionController, :create
+
+    get "/clock", ClockController, :display
   end
 
   scope "/", EbayClone do

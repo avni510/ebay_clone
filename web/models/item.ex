@@ -30,27 +30,27 @@ defmodule EbayClone.Item do
   end
 
   def current_price(item_id) do
-    all_bid_prices = get_all_prices(item_id)
-    retrieve_price(all_bid_prices, item_id)
+    max_bid_price = get_max_price(item_id)
+    retrieve_price(max_bid_price, item_id)
   end
 
-  defp get_all_prices(item_id) do
+  defp get_max_price(item_id) do
     query = from bid in Bid,
       where: bid.item_id == ^item_id,
-      select: bid.price
-    Repo.all(query)
+      select: max(bid.price)
+    Repo.one(query)
   end
 
   defp set_default_is_closed_flag(struct) do
     %{struct | is_closed: false}
   end
 
-  defp retrieve_price(all_prices, item_id) do
-    if Enum.empty?(all_prices) do
+  defp retrieve_price(max_bid_price, item_id) do
+    if max_bid_price do
+      max_bid_price
+    else
       item = Repo.get(__MODULE__, item_id)
       item.start_price
-    else
-      Enum.max(all_prices)
     end
   end
 

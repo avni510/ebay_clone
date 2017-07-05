@@ -1,2 +1,5 @@
+<br/>
+<br/>
+<div data-clock> </div>
 <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-<script> require("web/static/js/app").Time.run()</script>
+<script> require("web/static/js/app").Time.run(document.querySelectorAll("div[data-clock]"))</script>

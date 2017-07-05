@@ -8,8 +8,8 @@ export var App = {
 }
 
 export var Time = {
-  run: function() {
-    Clock.run()
+  run: function(tag) {
+    Clock.run(tag)
   }
 }
 //

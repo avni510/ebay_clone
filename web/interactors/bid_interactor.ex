@@ -6,6 +6,22 @@ defmodule EbayClone.BidInteractor do
   alias EbayClone.Item
   alias EbayClone.User
 
+  def insert(%{item_id: item_id} = params) do
+    Repo.transaction(fn ->
+      _ = Bid
+        |> select(1)
+        |> limit(1)
+        |> lock("FOR UPDATE")
+        |> Repo.one
+      Bid.changeset(%Bid{}, params)
+      |> Repo.insert
+    end)
+    |> case do
+      {:ok, result} -> result
+      {:error, _} = e -> e
+    end
+  end
+
   def get_bids_for_item(item_id) do
     Repo.get!(Item, item_id)
     query_for_all_bids_for_item(item_id) |> return_value

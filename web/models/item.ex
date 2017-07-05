@@ -11,10 +11,10 @@ defmodule EbayClone.Item do
     field :description, :string
     field :start_price, :integer
     field :end_date, :utc_datetime
-    belongs_to :user, EbayClone.User
     field :is_closed, :boolean
+    field :current_price, :integer, virtual: true
+    belongs_to :user, EbayClone.User
     belongs_to :winner, EbayClone.User
-
     timestamps()
   end
 
@@ -29,16 +29,24 @@ defmodule EbayClone.Item do
     |> foreign_key_constraint(:winner_id)
   end
 
+  def current_price(%__MODULE__{} = item) do
+    max_bid_price(item.id)
+  end
+
   def current_price(item_id) do
     max_bid_price = get_max_price(item_id)
     retrieve_price(max_bid_price, item_id)
   end
 
   defp get_max_price(item_id) do
-    query = from bid in Bid,
+    max_bid_price(item_id)
+    |> Repo.one
+  end
+
+  defp max_bid_price(item_id) do
+    from bid in Bid,
       where: bid.item_id == ^item_id,
       select: max(bid.price)
-    Repo.one(query)
   end
 
   defp set_default_is_closed_flag(struct) do

@@ -70,9 +70,9 @@ defmodule EbayClone.ItemControllerTest do
       {:ok, user} = create_user("foo@example.com", "test password")
       conn = build_conn() |> assign(:current_user, user.id)
 
-      assert_error_sent 404, fn ->
-        get conn, item_path(conn, :show, -1)
-      end
+      conn = get conn, item_path(conn, :show, -1)
+
+      assert conn.status == 404
     end
   end
 

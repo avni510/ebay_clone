@@ -31,8 +31,13 @@ defmodule EbayClone.ItemController do
   end
 
   def show(conn, %{"id" => id}) do
-    item = Repo.get!(Item, id)
-    render(conn, "show.html", item: item, changeset: Item.changeset(%Item{}, %{}))
+    case ItemInteractor.load(id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> render(EbayClone.ErrorView, "404.html")
+      item -> render(conn, "show.html", item: item, changeset: Item.changeset(%Item{}, %{}))
+    end
   end
 
   def edit(conn, %{"id" => id}) do
